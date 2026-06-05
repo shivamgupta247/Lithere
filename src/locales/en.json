@@ -1,0 +1,243 @@
+{
+  "navbar": {
+    "about": "About",
+    "science": "Science",
+    "ingredients": "Ingredients",
+    "benefits": "Benefits",
+    "faq": "FAQ",
+    "orderNow": "Order Now"
+  },
+  "hero": {
+    "ayurvedicPath": "The Ayurvedic path to",
+    "lithera": "Lithera",
+    "ayurvedicTablet": "Ayurvedic Tablet",
+    "naturalKidneyWellness": "Natural Kidney Wellness.",
+    "description": "A time-honoured Ayurvedic formulation designed to support urinary tract health, dissolve kidney stones, and restore renal vitality naturally.",
+    "exploreIngredients": "Explore Ingredients",
+    "learnMore": "Learn More",
+    "scroll": "Scroll",
+    "floatingLabels": {
+      "gokhru": "Gokhru",
+      "punarnava": "Punarnava",
+      "shilajit": "Shilajit",
+      "pashanbhed": "Pashanbhed"
+    }
+  },
+  "about": {
+    "subtitle": "About Lithera",
+    "title1": "The Art of ",
+    "title2": "Renal Wellness.",
+    "description": "Lithera Tablet harmonises the power of 9 potent Ayurvedic herbs to deliver comprehensive kidney and urinary tract support — dissolving stones, reducing inflammation, and promoting diuretic action naturally.",
+    "features": {
+      "f1": {
+        "title": "Ancient Wisdom",
+        "desc": "Rooted in centuries-old Ayurvedic traditions, each ingredient is chosen for proven therapeutic benefits."
+      },
+      "f2": {
+        "title": "Clinically Researched",
+        "desc": "Each herb is backed by modern pharmacological studies validating its efficacy in kidney health."
+      },
+      "f3": {
+        "title": "100% Natural",
+        "desc": "Pure herbal extracts with no synthetic chemicals, preservatives, or artificial additives."
+      }
+    },
+    "stats": {
+      "s1": { "value": "9", "label": "Herbal Ingredients" },
+      "s2": { "value": "525mg", "label": "Total Potency" },
+      "s3": { "value": "100%", "label": "Natural Formula" },
+      "s4": { "value": "0", "label": "Side Effects" }
+    }
+  },
+  "science": {
+    "subtitle": "How It Works",
+    "title1": "The Path to",
+    "title2": "Kidney Wellness.",
+    "description": "Lithera works through a 4-stage mechanism of action, each phase building upon the last to deliver comprehensive renal support.",
+    "steps": {
+      "s1": {
+        "title": "Lithotriptic Action",
+        "subtitle": "Breaking Down Stones",
+        "desc": "Varun Chhal and Pashanbhed work synergistically to fragment kidney and bladder calculi, dissolving calcium oxalate and phosphate deposits through enzymatic action."
+      },
+      "s2": {
+        "title": "Diuretic Flush",
+        "subtitle": "Cleansing the Urinary Tract",
+        "desc": "Gokhru, Punarnava, and Apamarga increase urine output naturally, flushing stone debris, toxins, and microbial pathogens from the kidneys and urinary tract."
+      },
+      "s3": {
+        "title": "Anti-Inflammatory Shield",
+        "subtitle": "Soothing Inflammation",
+        "desc": "Palash Pushp and Punarnava reduce renal and bladder inflammation, relieving burning micturition, dysuria, and recurrent urinary tract infections."
+      },
+      "s4": {
+        "title": "Cellular Rejuvenation",
+        "subtitle": "Restoring Renal Vitality",
+        "desc": "Shilajit's fulvic acid and Kulthi's antioxidant compounds revitalise damaged kidney nephrons, enhance glomerular filtration rate, and promote long-term renal health."
+      }
+    }
+  },
+  "ingredients": {
+    "subtitle": "Composition",
+    "title1": "Nature",
+    "title2": "in every molecule.",
+    "description": "We combined the wisdom of Ayurveda and the precision of modern pharmacology to create a synergistic formulation for your kidneys.",
+    "totalTitle": "Total active ingredients per tablet",
+    "totalValue": "525 mg + Excipients q.s.",
+    "items": {
+      "i1": {
+        "name": "Varun Chhal",
+        "desc": "A powerful lithotriptic herb that breaks down urinary calculi and prevents stone recurrence. It strengthens bladder tone and promotes healthy urination."
+      },
+      "i2": {
+        "name": "Gokhru",
+        "desc": "Known as \"Small Caltrops\", this herb acts as a natural diuretic and soothing agent for the urinary tract, easing burning sensations and painful urination."
+      },
+      "i3": {
+        "name": "Punarnava",
+        "desc": "The \"Rejuvenator\" herb — a potent anti-inflammatory and diuretic that reduces kidney swelling, flushes toxins, and supports renal tissue regeneration."
+      },
+      "i4": {
+        "name": "Kulthi",
+        "desc": "Horse gram powder, a traditional remedy celebrated for its ability to dissolve kidney stones and reduce urinary calcium oxalate crystal formation."
+      },
+      "i5": {
+        "name": "Pashanbhed",
+        "desc": "Literally \"Stone Breaker\" — this herb has been used for millennia to fragment and expel kidney and bladder stones while preventing future formation."
+      },
+      "i6": {
+        "name": "Palash Pushp",
+        "desc": "The Flame of the Forest flower extract possesses anti-inflammatory and antimicrobial properties, supporting urinary tract health and reducing infection risk."
+      },
+      "i7": {
+        "name": "Sarjikakshara",
+        "desc": "An alkalizing agent that balances urinary pH, creating an environment hostile to stone formation while enhancing the absorption of herbal actives."
+      },
+      "i8": {
+        "name": "Apamarga",
+        "desc": "A renowned Ayurvedic herb for urinary disorders. It promotes diuresis, clears urinary tract obstructions, and supports overall kidney function."
+      },
+      "i9": {
+        "name": "Shilajit",
+        "desc": "The \"Destroyer of Weakness\" — a mineral-rich resin packed with fulvic acid that revitalises kidney cells, boosts immunity, and accelerates tissue repair."
+      }
+    }
+  },
+  "benefits": {
+    "subtitle": "Benefits",
+    "title1": "Why Choose",
+    "title2": "Lithera?",
+    "grid": {
+      "b1": {
+        "title": "Kidney Stone Dissolution",
+        "desc": "Breaks down and expels existing kidney and bladder stones through powerful lithotriptic action, preventing painful surgical intervention."
+      },
+      "b2": {
+        "title": "Urinary Tract Health",
+        "desc": "Soothes urinary tract inflammation, relieves burning micturition, and prevents recurrent UTIs with antimicrobial herbal actives."
+      },
+      "b3": {
+        "title": "Natural Diuretic",
+        "desc": "Promotes healthy urine flow and volume without electrolyte imbalance, flushing toxins and stone debris effectively."
+      },
+      "b4": {
+        "title": "Anti-Inflammatory",
+        "desc": "Reduces renal and bladder inflammation, alleviating pain and discomfort associated with kidney disorders and urinary infections."
+      },
+      "b5": {
+        "title": "pH Balance",
+        "desc": "Sarjikakshara alkalises urine pH, creating an environment that inhibits the formation of new kidney stones and crystalline deposits."
+      },
+      "b6": {
+        "title": "Renal Cell Repair",
+        "desc": "Shilajit and Punarnava promote nephron regeneration, enhance glomerular filtration rate, and support long-term kidney function."
+      }
+    },
+    "audience": {
+      "title1": "For those who",
+      "title2": "value their health.",
+      "desc": "Lithera Tablet is formulated for individuals who seek natural, effective kidney care without the harsh side effects of synthetic medications. Whether you're treating existing conditions or investing in prevention, Lithera is your trusted companion.",
+      "list": [
+        "Individuals with recurrent kidney stones",
+        "Patients with urinary tract infections",
+        "Those experiencing burning micturition",
+        "People seeking preventive kidney care",
+        "Individuals with renal calculi history"
+      ],
+      "badge": "NATURAL CARE"
+    }
+  },
+  "faq": {
+    "subtitle": "FAQ",
+    "title1": "Your Questions,",
+    "title2": "Answered.",
+    "items": [
+      {
+        "q": "What is Lithera Tablet used for?",
+        "a": "Lithera Tablet is an Ayurvedic formulation designed to support kidney and urinary tract health. It is used for dissolving kidney stones (renal calculi), preventing stone recurrence, relieving burning micturition, treating urinary tract infections, and promoting overall renal wellness through its unique blend of 9 potent herbal ingredients."
+      },
+      {
+        "q": "How should I take Lithera Tablet?",
+        "a": "The recommended dosage is 1-2 tablets twice daily after meals, or as directed by your physician. Swallow with lukewarm water for optimal absorption. For kidney stone treatment, a course of 2-3 months is generally recommended. For preventive care, a 1-month course repeated quarterly is advised."
+      },
+      {
+        "q": "Are there any side effects?",
+        "a": "Lithera Tablet is formulated with 100% natural Ayurvedic ingredients and is generally well-tolerated with no known significant side effects when taken at recommended doses. However, individuals with pre-existing medical conditions, pregnant or lactating women, and those on prescription medications should consult their healthcare provider before use."
+      },
+      {
+        "q": "How long before I see results?",
+        "a": "The onset of action varies depending on the condition being treated. For urinary tract symptoms like burning micturition, relief may be felt within 1-2 weeks. For kidney stone dissolution, noticeable results typically appear within 4-8 weeks of regular use. Preventive benefits accrue over the course of regular supplementation."
+      },
+      {
+        "q": "Can Lithera be taken with other medications?",
+        "a": "Lithera Tablet is a natural herbal supplement and is generally compatible with most medications. However, since it contains Sarjikakshara (sodium bicarbonate) which affects urine pH, it is advisable to consult your physician if you are taking prescription medications for kidney disease, blood pressure, or diabetes to ensure there are no interactions."
+      },
+      {
+        "q": "Is Lithera Tablet clinically tested?",
+        "a": "Each individual ingredient in Lithera Tablet has been extensively studied in both traditional Ayurvedic literature and modern pharmacological research. Herbs like Crataeva nurvala, Tribulus terrestris, and Boerhaavia diffusa have published clinical studies validating their lithotriptic, diuretic, and nephroprotective properties."
+      }
+    ]
+  },
+  "cta": {
+    "title1": "Your path to",
+    "title2": "kidney wellness",
+    "title3": "begins now.",
+    "desc": "Experience the healing power of Ayurveda with Lithera Tablet. Natural, effective, and time-tested for your kidneys.",
+    "orderNow": "Order Lithera Now",
+    "consult": "Consult a Doctor",
+    "badges": {
+      "b1": "100% Ayurvedic",
+      "b2": "GMP Certified",
+      "b3": "Lab Tested",
+      "b4": "No Side Effects"
+    }
+  },
+  "footer": {
+    "desc": "An Ayurvedic formulation combining 9 potent herbs for comprehensive kidney and urinary tract care. Rooted in ancient wisdom, validated by modern science.",
+    "madeWith": "Made with",
+    "inIndia": "in India",
+    "categories": {
+      "Product": "Product",
+      "Company": "Company",
+      "Support": "Support"
+    },
+    "links": {
+      "Ingredients": "Ingredients",
+      "Benefits": "Benefits",
+      "How It Works": "How It Works",
+      "FAQ": "FAQ",
+      "About Us": "About Us",
+      "Research": "Research",
+      "Quality Assurance": "Quality Assurance",
+      "Certifications": "Certifications",
+      "Contact Us": "Contact Us",
+      "Shipping Info": "Shipping Info",
+      "Return Policy": "Return Policy",
+      "Privacy Policy": "Privacy Policy"
+    },
+    "disclaimer": "Disclaimer",
+    "disclaimerText": "Lithera Tablet is an Ayurvedic supplement intended for dietary and wellness purposes. These statements have not been evaluated by the FDA. This product is not intended to diagnose, treat, cure, or prevent any disease. Please consult your healthcare provider before starting any new supplement, especially if you have pre-existing medical conditions or are taking prescribed medications.",
+    "copyright": "© {{year}} Lithera Healthcare. All rights reserved.",
+    "backToTop": "Back to top"
+  }
+}
