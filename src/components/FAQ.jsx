@@ -16,7 +16,7 @@ function FAQItem({ faq, isOpen, onToggle, index, isInView }) {
         aria-expanded={isOpen}
       >
         <span className="flex items-center gap-4">
-          <span className="text-gold/30 font-serif text-lg font-bold">
+          <span className="text-gold/70 font-serif text-lg font-bold">
             {String(index + 1).padStart(2, '0')}
           </span>
           <span className={`font-serif text-lg sm:text-xl transition-colors duration-300 ${
@@ -32,7 +32,7 @@ function FAQItem({ faq, isOpen, onToggle, index, isInView }) {
           className={`flex-shrink-0 ml-4 w-8 h-8 rounded-full border flex items-center justify-center transition-colors duration-300 ${
             isOpen
               ? 'border-gold bg-gold/10 text-gold'
-              : 'border-gold/20 text-gold/40 group-hover:border-gold/40'
+              : 'border-gold/30 text-gold/60 group-hover:border-gold/50'
           }`}
         >
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none">

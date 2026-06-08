@@ -1,6 +1,15 @@
 import { useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import varunChhalImg from '../assets/ingredients/varun_chhal.png';
+import gokhruImg from '../assets/ingredients/gokhru.png';
+import punarnavaImg from '../assets/ingredients/punarnava.png';
+import kulthiImg from '../assets/ingredients/kulthi.png';
+import pashanbhedImg from '../assets/ingredients/pashanbhed.png';
+import palashPushpImg from '../assets/ingredients/palash_pushp.png';
+import sarjikaksharaImg from '../assets/ingredients/sarjikakshara.png';
+import apamargaImg from '../assets/ingredients/apamarga.png';
+import shilajitImg from '../assets/ingredients/shilajit.png';
 
 function IngredientCard({ ingredient, index, isInView }) {
   const [isFlipped, setIsFlipped] = useState(false);
@@ -21,31 +30,30 @@ function IngredientCard({ ingredient, index, isInView }) {
         className="relative w-full h-full preserve-3d"
       >
         {/* Front Face */}
-        <div className="absolute inset-0 backface-hidden glass-card p-6 flex flex-col items-center justify-center text-center group border border-gold/10 hover:border-gold/30 transition-colors duration-500">
-          {/* Decorative line */}
-          <div className="w-8 h-[2px] bg-gold/40 mb-5" />
+        <div className="absolute inset-0 backface-hidden glass-card overflow-hidden group border border-gold/10 hover:border-gold/30 transition-colors duration-500">
+          
+          <img src={ingredient.icon} alt={ingredient.name} className="absolute inset-0 w-full h-full object-cover mix-blend-multiply opacity-50 group-hover:scale-110 group-hover:opacity-60 transition-all duration-700 z-0" />
 
-          {/* Icon */}
-          <motion.div
-            className="text-4xl mb-4"
-            whileHover={{ scale: 1.2, rotate: 10 }}
-          >
-            {ingredient.icon}
-          </motion.div>
+          <div className="absolute inset-0 bg-gradient-to-b from-[#ffffff]/90 via-[#ffffff]/40 to-transparent z-[1] opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
 
-          {/* Name */}
-          <h3 className="font-serif text-lg font-bold text-white mb-1">
-            {ingredient.name}
-          </h3>
+          <div className="relative z-10 h-full p-6 flex flex-col items-center justify-start text-center pt-8">
+            {/* Decorative line */}
+            <div className="w-8 h-[2px] bg-gold/60 mb-4" />
 
-          {/* Dose */}
-          <p className="text-gold text-sm font-medium tracking-wider uppercase">
-            {ingredient.dose}
-          </p>
+            {/* Name */}
+            <h3 className="font-serif text-2xl font-bold text-white mb-2 drop-shadow-md">
+              {ingredient.name}
+            </h3>
 
-          {/* Expand hint */}
-          <div className="absolute bottom-4 text-gray/50 text-lg">
-            +
+            {/* Dose */}
+            <p className="text-gold font-bold text-sm tracking-wider uppercase drop-shadow-sm bg-[#ffffff]/50 px-3 py-1 rounded-full backdrop-blur-md border border-gold/20">
+              {ingredient.dose}
+            </p>
+
+            {/* Expand hint */}
+            <div className="mt-auto text-navy/40 text-3xl group-hover:text-gold transition-colors pb-2">
+              +
+            </div>
           </div>
         </div>
 
@@ -92,7 +100,7 @@ export default function Ingredients() {
       name: t('ingredients.items.i1.name'),
       latin: 'Crataeva nurvala',
       dose: '120 mg',
-      icon: '🌿',
+      icon: varunChhalImg,
       color: '#2d8a5e',
       description: t('ingredients.items.i1.desc'),
     },
@@ -100,7 +108,7 @@ export default function Ingredients() {
       name: t('ingredients.items.i2.name'),
       latin: 'Tribulus terrestris',
       dose: '100 mg',
-      icon: '🍃',
+      icon: gokhruImg,
       color: '#3ba876',
       description: t('ingredients.items.i2.desc'),
     },
@@ -108,7 +116,7 @@ export default function Ingredients() {
       name: t('ingredients.items.i3.name'),
       latin: 'Boerhaavia diffusa',
       dose: '75 mg',
-      icon: '🌱',
+      icon: punarnavaImg,
       color: '#27ae60',
       description: t('ingredients.items.i3.desc'),
     },
@@ -116,7 +124,7 @@ export default function Ingredients() {
       name: t('ingredients.items.i4.name'),
       latin: 'Dolichos biflorus',
       dose: '55 mg',
-      icon: '🫘',
+      icon: kulthiImg,
       color: '#8B7355',
       description: t('ingredients.items.i4.desc'),
     },
@@ -124,7 +132,7 @@ export default function Ingredients() {
       name: t('ingredients.items.i5.name'),
       latin: 'Saxifraga ligulata',
       dose: '50 mg',
-      icon: '⛰️',
+      icon: pashanbhedImg,
       color: '#708090',
       description: t('ingredients.items.i5.desc'),
     },
@@ -132,7 +140,7 @@ export default function Ingredients() {
       name: t('ingredients.items.i6.name'),
       latin: 'Butea frondosa',
       dose: '45 mg',
-      icon: '🌺',
+      icon: palashPushpImg,
       color: '#e74c3c',
       description: t('ingredients.items.i6.desc'),
     },
@@ -140,7 +148,7 @@ export default function Ingredients() {
       name: t('ingredients.items.i7.name'),
       latin: 'Sodium bicarbonate',
       dose: '40 mg',
-      icon: '💎',
+      icon: sarjikaksharaImg,
       color: '#c9982e',
       description: t('ingredients.items.i7.desc'),
     },
@@ -148,7 +156,7 @@ export default function Ingredients() {
       name: t('ingredients.items.i8.name'),
       latin: 'Achyranthes aspera',
       dose: '30 mg',
-      icon: '🌾',
+      icon: apamargaImg,
       color: '#8fbc8f',
       description: t('ingredients.items.i8.desc'),
     },
@@ -156,7 +164,7 @@ export default function Ingredients() {
       name: t('ingredients.items.i9.name'),
       latin: 'Asphaltum punjabianum',
       dose: '10 mg',
-      icon: '🪨',
+      icon: shilajitImg,
       color: '#4a3728',
       description: t('ingredients.items.i9.desc'),
     },

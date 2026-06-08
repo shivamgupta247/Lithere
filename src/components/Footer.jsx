@@ -55,7 +55,11 @@ export default function Footer() {
 
             <div className="flex items-center gap-2 text-gold/60">
               <span className="text-xs tracking-wider">{t('footer.madeWith')}</span>
-              <span className="text-gold">🌿</span>
+              <span className="text-gold">
+                <svg viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor">
+                  <path d="M17 8C8 10 5 16 5 16C5 16 7 12 12 10C9 14 8 19 8 19C8 19 13 18 17 12C21 6 22 2 22 2C22 2 19 4 17 8Z" />
+                </svg>
+              </span>
               <span className="text-xs tracking-wider">{t('footer.inIndia')}</span>
             </div>
           </div>
@@ -84,21 +88,21 @@ export default function Footer() {
         </div>
 
         <div className="mt-16 pt-8 border-t border-gold/5">
-          <p className="text-gray/50 text-xs leading-relaxed mb-6 max-w-4xl">
-            <strong className="text-gray/70">{t('footer.disclaimer')}:</strong> {t('footer.disclaimerText')}
+          <p className="text-gray/80 text-xs leading-relaxed mb-6 max-w-4xl">
+            <strong className="text-gray/90">{t('footer.disclaimer')}:</strong> {t('footer.disclaimerText')}
           </p>
         </div>
 
         {/* Bottom Bar */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-8">
-          <p className="text-gray/40 text-xs tracking-wider">
+          <p className="text-gray/70 text-xs tracking-wider">
             {t('footer.copyright').replace('{{year}}', new Date().getFullYear())}
           </p>
 
           <motion.button
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             whileHover={{ y: -3 }}
-            className="flex items-center gap-2 text-gray/40 hover:text-gold transition-colors duration-300 text-xs tracking-wider"
+            className="flex items-center gap-2 text-gray/70 hover:text-gold transition-colors duration-300 text-xs tracking-wider"
           >
             <span>{t('footer.backToTop')}</span>
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">

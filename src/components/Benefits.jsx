@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import floatingLeavesImg from '../assets/floating_leaves.png';
 
 export default function Benefits() {
   const { t } = useTranslation();
@@ -219,18 +220,27 @@ export default function Benefits() {
               ))}
 
               {/* Center content */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="glass-card p-8 text-center rounded-full w-48 h-48 flex flex-col items-center justify-center">
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <motion.div
+                  animate={{ y: [0, -20, 0] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+                  className="flex flex-col items-center justify-center pointer-events-auto"
+                >
                   <motion.div
-                    animate={{ scale: [1, 1.1, 1] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                    className="text-4xl mb-2"
+                     animate={{ rotate: [0, 5, -5, 0] }}
+                     transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
                   >
-                    🌿
+                    <img
+                      src={floatingLeavesImg}
+                      alt="Floating Leaves"
+                      className="w-48 h-48 object-contain mix-blend-multiply drop-shadow-xl"
+                    />
                   </motion.div>
-                  <p className="text-gold font-serif text-lg font-bold">Lithera</p>
-                  <p className="text-gray text-xs tracking-wider">{t('benefits.audience.badge')}</p>
-                </div>
+                  <div className="mt-[-20px] flex flex-col items-center relative z-10">
+                    <p className="text-gold font-serif text-3xl font-bold drop-shadow-sm">Lithera</p>
+                    <p className="text-navy font-bold text-xs tracking-widest bg-[#ffffff]/60 px-3 py-1 rounded-full mt-2 backdrop-blur-md border border-gold/20 shadow-sm">{t('benefits.audience.badge')}</p>
+                  </div>
+                </motion.div>
               </div>
             </div>
           </motion.div>

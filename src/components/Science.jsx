@@ -14,28 +14,44 @@ export default function Science() {
       title: t('science.steps.s1.title'),
       subtitle: t('science.steps.s1.subtitle'),
       description: t('science.steps.s1.desc'),
-      icon: '⚡',
+      icon: (
+        <svg viewBox="0 0 24 24" className="w-8 h-8 text-gold" fill="none" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
+        </svg>
+      ),
     },
     {
       number: '02',
       title: t('science.steps.s2.title'),
       subtitle: t('science.steps.s2.subtitle'),
       description: t('science.steps.s2.desc'),
-      icon: '💧',
+      icon: (
+        <svg viewBox="0 0 24 24" className="w-8 h-8 text-gold" fill="none" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 21a9 9 0 009-9c0-5-9-10-9-10S3 7 3 12a9 9 0 009 9z" />
+        </svg>
+      ),
     },
     {
       number: '03',
       title: t('science.steps.s3.title'),
       subtitle: t('science.steps.s3.subtitle'),
       description: t('science.steps.s3.desc'),
-      icon: '🛡️',
+      icon: (
+        <svg viewBox="0 0 24 24" className="w-8 h-8 text-gold" fill="none" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+        </svg>
+      ),
     },
     {
       number: '04',
       title: t('science.steps.s4.title'),
       subtitle: t('science.steps.s4.subtitle'),
       description: t('science.steps.s4.desc'),
-      icon: '✨',
+      icon: (
+        <svg viewBox="0 0 24 24" className="w-8 h-8 text-gold" fill="none" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+        </svg>
+      ),
     },
   ];
 

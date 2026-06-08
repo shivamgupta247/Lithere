@@ -6,15 +6,15 @@
   --color-deep-navy: #f8fafc;
   --color-navy: #f1f5f9;
   --color-soft-navy: #e2e8f0;
-  --color-gold: #f97316;
-  --color-gold-light: #fb923c;
-  --color-gold-pale: #fdba74;
+  --color-gold: #ea580c; /* Darker orange for better contrast */
+  --color-gold-light: #c2410c; /* Darker for text readability */
+  --color-gold-pale: #f97316;
   --color-champagne: #ffedd5;
   --color-white: #1e3a8a;
-  --color-gray-light: #475569;
-  --color-gray: #64748b;
-  --color-emerald: #16a34a;
-  --color-emerald-light: #22c55e;
+  --color-gray-light: #1e293b; /* Very dark slate */
+  --color-gray: #334155; /* Dark slate */
+  --color-emerald: #15803d; /* Darker emerald */
+  --color-emerald-light: #16a34a;
 
   --font-serif: 'Playfair Display', Georgia, serif;
   --font-sans: 'Inter', system-ui, sans-serif;
