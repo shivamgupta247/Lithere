@@ -106,31 +106,7 @@ export default function CTA() {
           {t('cta.desc')}
         </motion.p>
 
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.8 }}
-          className="flex flex-col sm:flex-row gap-6 justify-center"
-        >
-          <motion.button
-            whileHover={{
-              scale: 1.05,
-              boxShadow: '0 0 60px rgba(201,152,46,0.4)',
-            }}
-            whileTap={{ scale: 0.95 }}
-            className="px-10 py-5 bg-gradient-to-r from-gold to-gold-light text-midnight font-bold text-sm tracking-[0.2em] uppercase rounded-full shadow-[0_0_30px_rgba(201,152,46,0.2)] transition-all duration-300"
-          >
-            {t('cta.orderNow')}
-          </motion.button>
 
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="px-10 py-5 border border-gold/30 text-gold-light font-medium text-sm tracking-[0.2em] uppercase rounded-full hover:bg-gold/5 transition-all duration-300"
-          >
-            {t('cta.consult')}
-          </motion.button>
-        </motion.div>
 
         {/* Trust badges */}
         <motion.div

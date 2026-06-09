@@ -85,14 +85,48 @@ export default function Hero() {
               </span>
             </motion.div>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.5 }}
-              className="font-serif text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold leading-[0.95] mb-8"
+            <motion.div
+              animate={{ y: [0, -10, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
             >
-              <span className="italic gold-text">{t('hero.naturalKidneyWellness')}</span>
-            </motion.h1>
+              <motion.h1
+                initial="hidden"
+                animate="visible"
+                variants={{
+                  hidden: { opacity: 0 },
+                  visible: {
+                    opacity: 1,
+                    transition: {
+                      staggerChildren: 0.04,
+                      delayChildren: 0.5,
+                    }
+                  }
+                }}
+                className="font-serif text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold leading-[0.95] mb-8 flex flex-wrap"
+              >
+                {t('hero.naturalKidneyWellness').split(' ').map((word, i) => (
+                  <span key={i} className="inline-flex mr-[0.3em]">
+                    {word.split('').map((char, j) => (
+                      <motion.span
+                        key={j}
+                        variants={{
+                          hidden: { opacity: 0, y: 50, rotateZ: 5 },
+                          visible: { 
+                            opacity: 1, 
+                            y: 0, 
+                            rotateZ: 0,
+                            transition: { type: "spring", damping: 12, stiffness: 150 }
+                          }
+                        }}
+                        className="italic gold-text inline-block p-2 -m-2"
+                      >
+                        {char}
+                      </motion.span>
+                    ))}
+                  </span>
+                ))}
+              </motion.h1>
+            </motion.div>
 
             <motion.p
               initial={{ opacity: 0, y: 30 }}

@@ -131,15 +131,7 @@ export default function Navbar() {
                 RU
               </button>
             </div>
-            <motion.a
-              href="#cta"
-              onClick={(e) => handleNavClick(e, '#cta')}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-6 py-2.5 bg-gradient-to-r from-gold to-gold-light text-midnight text-xs font-semibold tracking-widest uppercase rounded-full hover:shadow-[0_0_30px_rgba(201,152,46,0.4)] transition-shadow duration-300"
-            >
-              {t('navbar.orderNow')}
-            </motion.a>
+
           </div>
 
           {/* Mobile Hamburger */}
@@ -211,16 +203,7 @@ export default function Navbar() {
                     РУССКИЙ
                   </button>
                 </div>
-                <motion.a
-                  href="#cta"
-                  onClick={(e) => handleNavClick(e, '#cta')}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.5 }}
-                  className="px-6 py-3 bg-gradient-to-r from-gold to-gold-light text-midnight text-xs font-semibold tracking-widest uppercase rounded-full text-center"
-                >
-                  {t('navbar.orderNow')}
-                </motion.a>
+
               </div>
             </div>
           </motion.div>

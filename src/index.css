@@ -31,6 +31,11 @@
 /* Base Styles */
 html {
   scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
+}
+
+section, footer {
+  scroll-snap-align: start;
 }
 
 body {
@@ -85,12 +90,20 @@ body {
   box-shadow: 0 0 30px rgba(249, 115, 22, 0.1);
 }
 
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 /* Gold text gradient */
 .gold-text {
-  background: linear-gradient(135deg, var(--color-gold-light), var(--color-gold), var(--color-gold-pale));
+  background: linear-gradient(270deg, var(--color-gold-light), var(--color-gold), var(--color-gold-pale), var(--color-gold-light));
+  background-size: 300% 300%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  animation: gradient-shift 5s ease infinite;
 }
 
 /* Animated background particles */
