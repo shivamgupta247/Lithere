@@ -1,10 +1,11 @@
-import { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { useRef, useState, useCallback } from 'react';
+import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 
 export default function Hero() {
   const { t } = useTranslation();
   const ref = useRef(null);
+  const cardRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ['start start', 'end start'],
@@ -14,14 +15,36 @@ export default function Hero() {
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
   const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
 
-  // Floating particles
-  const particles = Array.from({ length: 30 }, (_, i) => ({
+  // Mouse-tracking 3D tilt for product card
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [15, -15]), { stiffness: 150, damping: 20 });
+  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-15, 15]), { stiffness: 150, damping: 20 });
+
+  const handleMouseMove = useCallback((e) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    mouseX.set(x);
+    mouseY.set(y);
+  }, [mouseX, mouseY]);
+
+  const handleMouseLeave = useCallback(() => {
+    mouseX.set(0);
+    mouseY.set(0);
+  }, [mouseX, mouseY]);
+
+  // Floating orb particles with depth layers
+  const particles = Array.from({ length: 35 }, (_, i) => ({
     id: i,
-    size: Math.random() * 4 + 1,
+    size: Math.random() * 6 + 2,
     x: Math.random() * 100,
     y: Math.random() * 100,
     duration: Math.random() * 8 + 6,
     delay: Math.random() * 5,
+    depth: Math.random(), // 0 = far, 1 = near
+    blur: Math.random() > 0.7,
   }));
 
   return (
@@ -30,23 +53,29 @@ export default function Hero() {
       id="hero"
       className="relative min-h-screen flex items-center overflow-hidden"
     >
-      {/* Animated Background */}
+      {/* Animated Background with depth */}
       <motion.div style={{ scale }} className="absolute inset-0 hero-gradient">
-        {/* Floating particles */}
+        {/* Depth-layered floating particles */}
         {particles.map((p) => (
           <motion.div
             key={p.id}
-            className="absolute rounded-full bg-gold/20"
+            className="absolute rounded-full"
             style={{
               width: p.size,
               height: p.size,
               left: `${p.x}%`,
               top: `${p.y}%`,
+              background: p.blur
+                ? `radial-gradient(circle, rgba(249,115,22,0.4), rgba(249,115,22,0.1))`
+                : `rgba(249,115,22,${0.1 + p.depth * 0.2})`,
+              filter: p.blur ? `blur(${2 + p.depth * 3}px)` : 'none',
+              zIndex: Math.floor(p.depth * 3),
             }}
             animate={{
-              y: [0, -40, -20, -60, 0],
-              x: [0, 15, -10, 20, 0],
-              opacity: [0.1, 0.4, 0.2, 0.5, 0.1],
+              y: [0, -40 * p.depth, -20, -60 * p.depth, 0],
+              x: [0, 15 * p.depth, -10, 20 * p.depth, 0],
+              opacity: [0.1, 0.4 * p.depth + 0.1, 0.2, 0.5 * p.depth + 0.1, 0.1],
+              scale: [1, 1.2, 0.9, 1.1, 1],
             }}
             transition={{
               duration: p.duration,
@@ -57,9 +86,15 @@ export default function Hero() {
           />
         ))}
 
-        {/* Radial glow effects */}
+        {/* Radial glow effects - multi-layer depth */}
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gold/5 rounded-full blur-[120px]" />
         <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-emerald/5 rounded-full blur-[100px]" />
+        <motion.div
+          animate={{ scale: [1, 1.2, 1], opacity: [0.03, 0.06, 0.03] }}
+          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full"
+          style={{ background: 'radial-gradient(circle, rgba(249,115,22,0.04) 0%, transparent 70%)' }}
+        />
       </motion.div>
 
       {/* Vignette Overlay */}
@@ -79,7 +114,12 @@ export default function Hero() {
               transition={{ duration: 0.8, delay: 0.3 }}
               className="flex items-center gap-3 mb-8"
             >
-              <div className="w-8 h-[1px] bg-gold" />
+              <motion.div
+                className="w-8 h-[1px] bg-gold"
+                initial={{ width: 0 }}
+                animate={{ width: 32 }}
+                transition={{ duration: 1, delay: 0.5 }}
+              />
               <span className="text-gold text-xs tracking-[0.3em] uppercase font-medium">
                 {t('hero.ayurvedicPath')}
               </span>
@@ -110,15 +150,17 @@ export default function Hero() {
                       <motion.span
                         key={j}
                         variants={{
-                          hidden: { opacity: 0, y: 50, rotateZ: 5 },
+                          hidden: { opacity: 0, y: 50, rotateZ: 5, rotateX: -90 },
                           visible: { 
                             opacity: 1, 
                             y: 0, 
                             rotateZ: 0,
+                            rotateX: 0,
                             transition: { type: "spring", damping: 12, stiffness: 150 }
                           }
                         }}
                         className="italic gold-text inline-block p-2 -m-2"
+                        style={{ transformStyle: 'preserve-3d' }}
                       >
                         {char}
                       </motion.span>
@@ -145,84 +187,141 @@ export default function Hero() {
             >
               <motion.a
                 href="#ingredients"
-                whileHover={{ scale: 1.05, boxShadow: '0 0 40px rgba(201,152,46,0.4)' }}
+                whileHover={{ scale: 1.05, boxShadow: '0 0 40px rgba(249,115,22,0.3), 0 20px 40px rgba(249,115,22,0.15)' }}
                 whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 bg-gradient-to-r from-gold to-gold-light text-midnight font-semibold text-sm tracking-widest uppercase rounded-full transition-all duration-300"
+                className="btn-premium px-8 py-4 bg-gradient-to-r from-gold to-gold-light text-midnight font-semibold text-sm tracking-widest uppercase rounded-full transition-all duration-300"
               >
                 {t('hero.exploreIngredients')}
               </motion.a>
               <motion.a
                 href="#about"
-                whileHover={{ scale: 1.05 }}
+                whileHover={{ scale: 1.05, borderColor: 'rgba(249,115,22,0.5)' }}
                 whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 border border-gold/30 text-gold-light font-medium text-sm tracking-widest uppercase rounded-full hover:bg-gold/5 transition-all duration-300"
+                className="px-8 py-4 border border-gold/30 text-gold-light font-medium text-sm tracking-widest uppercase rounded-full hover:bg-gold/5 transition-all duration-300 backdrop-blur-sm"
               >
                 {t('hero.learnMore')}
               </motion.a>
             </motion.div>
           </div>
 
-          {/* Right Column - Product Box Image */}
+          {/* Right Column - 3D Mouse-Tracking Product Box */}
           <motion.div
+            ref={cardRef}
             initial={{ opacity: 0, x: 80 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1.2, delay: 0.6, ease: 'easeOut' }}
             className="hidden lg:flex justify-center items-center relative"
-            style={{ perspective: '1200px' }}
+            style={{ perspective: '1500px' }}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
           >
-            {/* Background glow behind box */}
+            {/* Multi-layer background glow */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <div className="w-[400px] h-[300px] bg-gold/8 rounded-full blur-[100px]" />
+              <motion.div
+                animate={{ scale: [1, 1.1, 1], opacity: [0.06, 0.1, 0.06] }}
+                transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+                className="w-[500px] h-[400px] bg-gold/8 rounded-full blur-[120px]"
+              />
+            </div>
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <motion.div
+                animate={{ scale: [1.1, 1, 1.1], opacity: [0.04, 0.08, 0.04] }}
+                transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+                className="w-[350px] h-[350px] bg-emerald/5 rounded-full blur-[100px]"
+              />
             </div>
 
-            {/* 3D Tilted Product Box */}
+            {/* 3D Tilted Product Box with mouse tracking */}
             <motion.div
-              animate={{
-                rotateX: [2, -2, 2],
-                rotateY: [-8, -12, -8],
-                y: [0, -15, 0],
-              }}
-              transition={{
-                duration: 6,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              }}
-              whileHover={{
-                rotateX: 0,
-                rotateY: 0,
-                scale: 1.05,
-                transition: { duration: 0.5 },
-              }}
               style={{
+                rotateX,
+                rotateY,
                 transformStyle: 'preserve-3d',
               }}
               className="relative cursor-pointer"
             >
-              {/* Reflection/shadow beneath */}
-              <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-[80%] h-8 bg-gold/10 blur-2xl rounded-full" />
-
-              {/* Product Box Image */}
-              <img
-                src="/lithera-box.png"
-                alt="Lithera Tablet - Ayurvedic Kidney Care Product Box"
-                className="w-[420px] max-w-full drop-shadow-[0_20px_60px_rgba(201,152,46,0.25)] rounded-lg"
+              {/* 3D depth shadow beneath */}
+              <motion.div
+                style={{ rotateX: 0, rotateY: 0, transform: 'translateZ(-40px)' }}
+                className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-[75%] h-12 bg-gold/8 blur-3xl rounded-full"
               />
 
-              {/* Subtle shine overlay */}
+              {/* Floating orbiting particles around the card */}
+              {[0, 1, 2].map((i) => (
+                <motion.div
+                  key={i}
+                  className="absolute w-2 h-2 rounded-full bg-gold/30"
+                  style={{
+                    top: '50%',
+                    left: '50%',
+                    transformStyle: 'preserve-3d',
+                  }}
+                  animate={{
+                    rotate: 360,
+                  }}
+                  transition={{
+                    duration: 8 + i * 4,
+                    repeat: Infinity,
+                    ease: 'linear',
+                    delay: i * 2,
+                  }}
+                >
+                  <motion.div
+                    className="w-1.5 h-1.5 rounded-full bg-gold/40 blur-[1px]"
+                    style={{
+                      position: 'absolute',
+                      top: `${-60 - i * 25}px`,
+                      left: 0,
+                    }}
+                    animate={{
+                      opacity: [0.2, 0.6, 0.2],
+                      scale: [0.8, 1.2, 0.8],
+                    }}
+                    transition={{
+                      duration: 3,
+                      repeat: Infinity,
+                      ease: 'easeInOut',
+                    }}
+                  />
+                </motion.div>
+              ))}
+
+              {/* Product Box Image */}
+              <motion.img
+                src="/lithera-box.png"
+                alt="Lithera Tablet - Ayurvedic Kidney Care Product Box"
+                className="w-[420px] max-w-full rounded-lg"
+                style={{
+                  transform: 'translateZ(50px)',
+                  filter: 'drop-shadow(0 25px 60px rgba(249,115,22,0.2)) drop-shadow(0 10px 20px rgba(0,0,0,0.1))',
+                }}
+                animate={{
+                  y: [0, -10, 0],
+                }}
+                transition={{
+                  duration: 5,
+                  repeat: Infinity,
+                  ease: 'easeInOut',
+                }}
+              />
+
+              {/* Premium shine sweep overlay */}
               <motion.div
                 animate={{
-                  opacity: [0, 0.15, 0],
+                  opacity: [0, 0.2, 0],
                   x: ['-100%', '200%'],
                 }}
                 transition={{
-                  duration: 4,
+                  duration: 3.5,
                   repeat: Infinity,
-                  repeatDelay: 3,
+                  repeatDelay: 4,
                   ease: 'easeInOut',
                 }}
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent skew-x-12 rounded-lg overflow-hidden pointer-events-none"
-                style={{ mixBlendMode: 'overlay' }}
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-12 rounded-lg overflow-hidden pointer-events-none"
+                style={{ mixBlendMode: 'overlay', transform: 'translateZ(60px)' }}
               />
+
+
             </motion.div>
           </motion.div>
         </div>
@@ -239,9 +338,13 @@ export default function Hero() {
         <motion.div
           animate={{ y: [0, 8, 0] }}
           transition={{ duration: 1.5, repeat: Infinity }}
-          className="w-5 h-8 border border-gold/30 rounded-full flex justify-center pt-1.5"
+          className="w-5 h-8 border border-gold/30 rounded-full flex justify-center pt-1.5 backdrop-blur-sm"
         >
-          <div className="w-1 h-2 bg-gold rounded-full" />
+          <motion.div
+            animate={{ height: [6, 10, 6], opacity: [0.5, 1, 0.5] }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+            className="w-1 bg-gold rounded-full"
+          />
         </motion.div>
       </motion.div>
     </section>

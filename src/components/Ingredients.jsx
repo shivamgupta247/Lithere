@@ -16,29 +16,50 @@ function IngredientCard({ ingredient, index, isInView }) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 60 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, delay: 0.1 + index * 0.08 }}
-      className="perspective-1000 cursor-pointer h-[280px]"
+      initial={{ opacity: 0, y: 60, rotateX: -15 }}
+      animate={isInView ? { opacity: 1, y: 0, rotateX: 0 } : {}}
+      transition={{ duration: 0.7, delay: 0.1 + index * 0.08, ease: [0.23, 1, 0.32, 1] }}
+      className="cursor-pointer h-[300px]"
+      style={{ perspective: '1200px' }}
       onMouseEnter={() => setIsFlipped(true)}
       onMouseLeave={() => setIsFlipped(false)}
       onClick={() => setIsFlipped(!isFlipped)}
     >
       <motion.div
         animate={{ rotateY: isFlipped ? 180 : 0 }}
-        transition={{ duration: 0.6, ease: 'easeInOut' }}
-        className="relative w-full h-full preserve-3d"
+        transition={{ duration: 0.7, ease: [0.23, 1, 0.32, 1] }}
+        className="relative w-full h-full"
+        style={{ transformStyle: 'preserve-3d' }}
       >
         {/* Front Face */}
-        <div className="absolute inset-0 backface-hidden glass-card overflow-hidden group border border-gold/10 hover:border-gold/30 transition-colors duration-500">
-          
-          <img src={ingredient.icon} alt={ingredient.name} className="absolute inset-0 w-full h-full object-cover mix-blend-multiply opacity-50 group-hover:scale-110 group-hover:opacity-60 transition-all duration-700 z-0" />
+        <div
+          className="absolute inset-0 overflow-hidden group border border-gold/10 hover:border-gold/30 transition-colors duration-500 rounded-[24px]"
+          style={{
+            backfaceVisibility: 'hidden',
+            background: 'rgba(248, 250, 252, 0.55)',
+            backdropFilter: 'blur(16px)',
+          }}
+        >
+          <img
+            src={ingredient.icon}
+            alt={ingredient.name}
+            className="absolute inset-0 w-full h-full object-cover mix-blend-multiply opacity-50 group-hover:scale-110 group-hover:opacity-60 transition-all duration-700 z-0"
+          />
 
           <div className="absolute inset-0 bg-gradient-to-b from-[#ffffff]/90 via-[#ffffff]/40 to-transparent z-[1] opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
 
+          {/* Animated shimmer on hover */}
+          <div className="absolute inset-0 z-[2] opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+            <div className="absolute inset-0 animate-shimmer" />
+          </div>
+
           <div className="relative z-10 h-full p-6 flex flex-col items-center justify-start text-center pt-8">
-            {/* Decorative line */}
-            <div className="w-8 h-[2px] bg-gold/60 mb-4" />
+            {/* Decorative line with glow */}
+            <motion.div
+              className="w-8 h-[2px] bg-gold/60 mb-4"
+              animate={isInView ? { width: [0, 32] } : {}}
+              transition={{ delay: 0.3 + index * 0.1, duration: 0.6 }}
+            />
 
             {/* Name */}
             <h3 className="font-serif text-2xl font-bold text-white mb-2 drop-shadow-md">
@@ -50,40 +71,55 @@ function IngredientCard({ ingredient, index, isInView }) {
               {ingredient.dose}
             </p>
 
-            {/* Expand hint */}
-            <div className="mt-auto text-navy/40 text-3xl group-hover:text-gold transition-colors pb-2">
+            {/* Expand hint with 3D depth */}
+            <motion.div
+              className="mt-auto text-navy/40 text-3xl group-hover:text-gold transition-colors pb-2"
+              animate={{ y: [0, -4, 0] }}
+              transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+            >
               +
-            </div>
+            </motion.div>
           </div>
         </div>
 
-        {/* Back Face */}
+        {/* Back Face with 3D depth layers */}
         <div
-          className="absolute inset-0 backface-hidden rotate-y-180 rounded-2xl p-6 flex flex-col justify-center border border-gold/20"
+          className="absolute inset-0 rounded-[24px] p-6 flex flex-col justify-center border border-gold/20 overflow-hidden"
           style={{
+            backfaceVisibility: 'hidden',
+            transform: 'rotateY(180deg)',
             background: `linear-gradient(135deg, var(--color-deep-navy) 0%, ${ingredient.color}15 50%, var(--color-deep-navy) 100%)`,
           }}
         >
-          {/* Latin Name */}
-          <p className="text-gold/70 text-xs tracking-wider uppercase mb-2 italic">
-            {ingredient.latin}
-          </p>
+          {/* Depth glow orb */}
+          <div
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full blur-[60px] opacity-30"
+            style={{ background: ingredient.color }}
+          />
 
-          {/* Name + Dose */}
-          <h3 className="font-serif text-lg font-bold text-white mb-1">
-            {ingredient.name}
-          </h3>
-          <p className="text-gold text-xs font-medium tracking-wider mb-4">
-            {ingredient.dose}
-          </p>
+          {/* Content */}
+          <div className="relative z-10">
+            {/* Latin Name */}
+            <p className="text-gold/70 text-xs tracking-wider uppercase mb-2 italic">
+              {ingredient.latin}
+            </p>
 
-          {/* Description */}
-          <p className="text-gray-light text-sm leading-relaxed">
-            {ingredient.description}
-          </p>
+            {/* Name + Dose */}
+            <h3 className="font-serif text-lg font-bold text-white mb-1">
+              {ingredient.name}
+            </h3>
+            <p className="text-gold text-xs font-medium tracking-wider mb-4">
+              {ingredient.dose}
+            </p>
 
-          {/* Decorative bottom border */}
-          <div className="w-12 h-[1px] bg-gold/30 mt-5" />
+            {/* Description */}
+            <p className="text-gray-light text-sm leading-relaxed">
+              {ingredient.description}
+            </p>
+
+            {/* Decorative bottom border */}
+            <div className="w-12 h-[1px] bg-gradient-to-r from-gold/50 to-transparent mt-5" />
+          </div>
         </div>
       </motion.div>
     </motion.div>
@@ -174,7 +210,11 @@ export default function Ingredients() {
     <section id="ingredients" className="relative py-40 lg:py-48 overflow-hidden" ref={ref}>
       {/* Background */}
       <div className="absolute top-0 left-0 right-0 section-divider" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-emerald/3 rounded-full blur-[200px]" />
+      <motion.div
+        animate={{ scale: [1, 1.2, 1], opacity: [0.02, 0.04, 0.02] }}
+        transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-emerald/3 rounded-full blur-[200px]"
+      />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         {/* Section Header */}
@@ -185,9 +225,19 @@ export default function Ingredients() {
             transition={{ duration: 0.6 }}
             className="flex items-center justify-center gap-3 mb-6"
           >
-            <div className="w-8 h-[1px] bg-gold/50" />
+            <motion.div
+              initial={{ width: 0 }}
+              animate={isInView ? { width: 32 } : {}}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="h-[1px] bg-gold/50"
+            />
             <span className="text-gold text-xs tracking-[0.3em] uppercase">{t('ingredients.subtitle')}</span>
-            <div className="w-8 h-[1px] bg-gold/50" />
+            <motion.div
+              initial={{ width: 0 }}
+              animate={isInView ? { width: 32 } : {}}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="h-[1px] bg-gold/50"
+            />
           </motion.div>
 
           <motion.h2
@@ -223,20 +273,34 @@ export default function Ingredients() {
           ))}
         </div>
 
-        {/* Total Formula Bar */}
+        {/* Total Formula Bar with 3D glass effect */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 1 }}
-          className="mt-20 lg:mt-24 glass-card p-8 flex flex-col sm:flex-row items-center justify-between gap-4"
+          className="mt-20 lg:mt-24 glass-card-3d p-8 flex flex-col sm:flex-row items-center justify-between gap-4"
         >
           <div className="flex items-center gap-3">
-            <div className="w-3 h-3 rounded-full bg-gold animate-pulse-glow" />
+            <motion.div
+              className="w-3 h-3 rounded-full bg-gold"
+              animate={{
+                boxShadow: [
+                  '0 0 5px rgba(249,115,22,0.3), 0 0 10px rgba(249,115,22,0.1)',
+                  '0 0 15px rgba(249,115,22,0.5), 0 0 30px rgba(249,115,22,0.2)',
+                  '0 0 5px rgba(249,115,22,0.3), 0 0 10px rgba(249,115,22,0.1)',
+                ],
+              }}
+              transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+            />
             <span className="text-gray-light text-sm tracking-wider">{t('ingredients.totalTitle')}</span>
           </div>
-          <div className="font-serif text-2xl font-bold gold-text text-center sm:text-right">
+          <motion.div
+            className="font-serif text-2xl font-bold gold-text text-center sm:text-right"
+            whileHover={{ scale: 1.05 }}
+            transition={{ type: 'spring', stiffness: 300 }}
+          >
             {t('ingredients.totalValue')}
-          </div>
+          </motion.div>
         </motion.div>
       </div>
     </section>

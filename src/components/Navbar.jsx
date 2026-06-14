@@ -58,23 +58,43 @@ export default function Navbar() {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.8, ease: 'easeOut' }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${
         scrolled
-          ? 'bg-midnight/90 backdrop-blur-xl border-b border-gold/10 shadow-[0_4px_30px_rgba(0,0,0,0.3)]'
+          ? 'bg-midnight/85 backdrop-blur-2xl border-b border-gold/10 shadow-[0_4px_30px_rgba(0,0,0,0.1)]'
           : 'bg-transparent'
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          {/* Logo */}
+          {/* Logo with 3D hover */}
           <motion.a
             href="#"
             className="flex items-center gap-3 group"
             whileHover={{ scale: 1.02 }}
+            style={{ perspective: '600px' }}
           >
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-gold to-gold-light flex items-center justify-center shadow-[0_0_20px_rgba(201,152,46,0.3)]">
-              <span className="text-midnight font-bold text-lg font-serif">L</span>
-            </div>
+            <motion.div
+              className="w-10 h-10 rounded-full bg-gradient-to-br from-gold to-gold-light flex items-center justify-center relative"
+              whileHover={{ rotateY: 180 }}
+              transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
+              style={{
+                transformStyle: 'preserve-3d',
+                boxShadow: '0 0 20px rgba(249,115,22,0.3), 0 4px 12px rgba(249,115,22,0.2)',
+              }}
+            >
+              <span
+                className="text-midnight font-bold text-lg font-serif"
+                style={{ backfaceVisibility: 'hidden' }}
+              >
+                L
+              </span>
+              <span
+                className="text-midnight font-bold text-lg font-serif absolute inset-0 flex items-center justify-center"
+                style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+              >
+                ✦
+              </span>
+            </motion.div>
             <span className="text-xl font-serif font-bold tracking-wider text-white group-hover:text-gold-light transition-colors duration-300">
               LITHERA
             </span>
@@ -97,8 +117,11 @@ export default function Navbar() {
                 {activeSection === link.href.slice(1) && (
                   <motion.div
                     layoutId="activeNav"
-                    className="absolute bottom-0 left-4 right-4 h-[2px] bg-gold"
+                    className="absolute bottom-0 left-4 right-4 h-[2px] bg-gold rounded-full"
                     transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                    style={{
+                      boxShadow: '0 0 8px rgba(249,115,22,0.4)',
+                    }}
                   />
                 )}
               </a>
@@ -108,13 +131,13 @@ export default function Navbar() {
           {/* CTA Button & Language Switcher */}
           <div className="hidden md:flex items-center gap-6">
             
-            {/* Custom Language Toggle */}
-            <div className="flex items-center bg-midnight/50 border border-gold/20 rounded-full p-1 backdrop-blur-sm">
+            {/* Custom Language Toggle with glass effect */}
+            <div className="flex items-center bg-midnight/30 border border-gold/15 rounded-full p-1 backdrop-blur-xl">
               <button
                 onClick={() => i18n.changeLanguage('en')}
                 className={`px-3 py-1.5 rounded-full text-[10px] font-bold tracking-widest transition-all duration-300 ${
                   i18n.language === 'en' || !i18n.language?.startsWith('ru')
-                    ? 'bg-gradient-to-r from-gold to-gold-light text-midnight shadow-[0_0_15px_rgba(201,152,46,0.4)]'
+                    ? 'bg-gradient-to-r from-gold to-gold-light text-midnight shadow-[0_0_15px_rgba(249,115,22,0.3)]'
                     : 'text-gray hover:text-white'
                 }`}
               >
@@ -124,7 +147,7 @@ export default function Navbar() {
                 onClick={() => i18n.changeLanguage('ru')}
                 className={`px-3 py-1.5 rounded-full text-[10px] font-bold tracking-widest transition-all duration-300 ${
                   i18n.language?.startsWith('ru')
-                    ? 'bg-gradient-to-r from-gold to-gold-light text-midnight shadow-[0_0_15px_rgba(201,152,46,0.4)]'
+                    ? 'bg-gradient-to-r from-gold to-gold-light text-midnight shadow-[0_0_15px_rgba(249,115,22,0.3)]'
                     : 'text-gray hover:text-white'
                 }`}
               >
@@ -163,7 +186,7 @@ export default function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-midnight/95 backdrop-blur-xl border-t border-gold/10 overflow-hidden"
+            className="md:hidden bg-midnight/95 backdrop-blur-2xl border-t border-gold/10 overflow-hidden"
           >
             <div className="px-6 py-6 flex flex-col gap-4">
               {navLinks.map((link, i) => (
@@ -181,7 +204,7 @@ export default function Navbar() {
               ))}
               {/* Mobile Lang Switcher & CTA */}
               <div className="flex flex-col gap-6 mt-4">
-                <div className="flex items-center justify-center gap-4 border border-gold/10 p-2 rounded-full mx-auto w-max">
+                <div className="flex items-center justify-center gap-4 border border-gold/10 p-2 rounded-full mx-auto w-max backdrop-blur-xl">
                   <button
                     onClick={() => { i18n.changeLanguage('en'); setMobileOpen(false); }}
                     className={`px-6 py-2 rounded-full text-xs font-bold tracking-widest transition-all duration-300 ${

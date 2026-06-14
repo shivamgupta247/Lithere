@@ -1,5 +1,5 @@
-import { useRef } from 'react';
-import { motion, useScroll, useTransform, useInView } from 'framer-motion';
+import { useRef, useCallback } from 'react';
+import { motion, useScroll, useTransform, useInView, useMotionValue, useSpring } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 
 export default function Science() {
@@ -66,8 +66,16 @@ export default function Science() {
     <section id="science" className="relative py-40 lg:py-48 overflow-hidden" ref={sectionRef}>
       {/* Background */}
       <div className="absolute top-0 left-0 right-0 section-divider" />
-      <div className="absolute top-1/4 left-0 w-80 h-80 bg-emerald/5 rounded-full blur-[150px]" />
-      <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-gold/3 rounded-full blur-[150px]" />
+      <motion.div
+        animate={{ y: [0, -40, 0], x: [0, 15, 0] }}
+        transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute top-1/4 left-0 w-80 h-80 bg-emerald/5 rounded-full blur-[150px]"
+      />
+      <motion.div
+        animate={{ y: [0, 30, 0], x: [0, -20, 0] }}
+        transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut', delay: 3 }}
+        className="absolute bottom-1/4 right-0 w-96 h-96 bg-gold/3 rounded-full blur-[150px]"
+      />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         {/* Section Header */}
@@ -78,9 +86,19 @@ export default function Science() {
             transition={{ duration: 0.6 }}
             className="flex items-center justify-center gap-3 mb-6"
           >
-            <div className="w-8 h-[1px] bg-gold/50" />
+            <motion.div
+              initial={{ width: 0 }}
+              animate={isInView ? { width: 32 } : {}}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="h-[1px] bg-gold/50"
+            />
             <span className="text-gold text-xs tracking-[0.3em] uppercase">{t('science.subtitle')}</span>
-            <div className="w-8 h-[1px] bg-gold/50" />
+            <motion.div
+              initial={{ width: 0 }}
+              animate={isInView ? { width: 32 } : {}}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="h-[1px] bg-gold/50"
+            />
           </motion.div>
 
           <motion.h2
@@ -131,7 +149,26 @@ export default function Science() {
 
 function TimelineStep({ step, index, isEven }) {
   const ref = useRef(null);
+  const cardRef = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-50px' });
+
+  // Mouse-tracking 3D tilt
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [6, -6]), { stiffness: 200, damping: 25 });
+  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-6, 6]), { stiffness: 200, damping: 25 });
+
+  const handleMouseMove = useCallback((e) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    mouseX.set((e.clientX - rect.left) / rect.width - 0.5);
+    mouseY.set((e.clientY - rect.top) / rect.height - 0.5);
+  }, [mouseX, mouseY]);
+
+  const handleMouseLeave = useCallback(() => {
+    mouseX.set(0);
+    mouseY.set(0);
+  }, [mouseX, mouseY]);
 
   return (
     <div
@@ -140,67 +177,89 @@ function TimelineStep({ step, index, isEven }) {
         isEven ? 'md:flex-row' : 'md:flex-row-reverse'
       } flex-row`}
     >
-      {/* Timeline Dot */}
+      {/* Timeline Dot with 3D pulse */}
       <div className="absolute left-8 md:left-1/2 -translate-x-1/2 z-10">
         <motion.div
           initial={{ scale: 0 }}
           animate={isInView ? { scale: 1 } : {}}
           transition={{ delay: 0.3, type: 'spring', stiffness: 200 }}
-          className="w-4 h-4 rounded-full bg-gold shadow-[0_0_15px_rgba(201,152,46,0.5)]"
+          className="w-4 h-4 rounded-full bg-gold shadow-[0_0_15px_rgba(249,115,22,0.5)] relative"
         >
           {isInView && (
-            <div className="absolute inset-0 rounded-full bg-gold animate-ping opacity-30" />
+            <>
+              <div className="absolute inset-0 rounded-full bg-gold animate-ping opacity-30" />
+              <motion.div
+                animate={{ scale: [1, 2.5, 1], opacity: [0.3, 0, 0.3] }}
+                transition={{ duration: 2, repeat: Infinity, ease: 'easeOut' }}
+                className="absolute inset-0 rounded-full border border-gold/40"
+              />
+            </>
           )}
         </motion.div>
       </div>
 
-      {/* Content Card */}
+      {/* 3D Content Card */}
       <motion.div
-        initial={{ opacity: 0, x: isEven ? -60 : 60 }}
-        animate={isInView ? { opacity: 1, x: 0 } : {}}
+        initial={{ opacity: 0, x: isEven ? -60 : 60, rotateY: isEven ? -10 : 10 }}
+        animate={isInView ? { opacity: 1, x: 0, rotateY: 0 } : {}}
         transition={{ duration: 0.8, delay: 0.2 }}
         className={`ml-20 md:ml-0 md:w-[calc(50%-40px)] ${
           isEven ? 'md:pr-0' : 'md:pl-0'
         } ${isEven ? '' : 'md:ml-auto'}`}
+        style={{ perspective: '1000px' }}
       >
-        <div className="glass-card glass-card-hover p-10 lg:p-12 group">
+        <motion.div
+          ref={cardRef}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+          style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
+          className="glass-card glass-card-hover p-10 lg:p-12 group"
+        >
           {/* Step number + Icon */}
-          <div className="flex items-center justify-between mb-6">
-            <span className="text-gold/30 font-serif text-4xl font-bold">
+          <div className="flex items-center justify-between mb-6" style={{ transform: 'translateZ(20px)' }}>
+            <motion.span
+              className="text-gold/30 font-serif text-4xl font-bold"
+              whileHover={{ scale: 1.2, color: 'rgba(249,115,22,0.5)' }}
+            >
               {step.number}
-            </span>
+            </motion.span>
             <motion.span
               className="text-3xl"
               animate={isInView ? { rotate: [0, 10, -10, 0] } : {}}
               transition={{ delay: 0.8, duration: 0.6 }}
+              style={{ transform: 'translateZ(30px)' }}
             >
               {step.icon}
             </motion.span>
           </div>
 
           {/* Subtitle */}
-          <p className="text-gold text-xs tracking-[0.2em] uppercase mb-3">
+          <p className="text-gold text-xs tracking-[0.2em] uppercase mb-3" style={{ transform: 'translateZ(15px)' }}>
             {step.subtitle}
           </p>
 
           {/* Title */}
-          <h3 className="font-serif text-2xl font-bold text-white mb-5 group-hover:text-gold-light transition-colors duration-300">
+          <h3
+            className="font-serif text-2xl font-bold text-white mb-5 group-hover:text-gold-light transition-colors duration-300"
+            style={{ transform: 'translateZ(20px)' }}
+          >
             {step.title}
           </h3>
 
           {/* Description */}
-          <p className="text-gray text-sm leading-relaxed">
+          <p className="text-gray text-sm leading-relaxed" style={{ transform: 'translateZ(10px)' }}>
             {step.description}
           </p>
 
-          {/* Bottom accent */}
+          {/* Bottom accent with animated width */}
           <motion.div
             initial={{ width: 0 }}
             animate={isInView ? { width: '3rem' } : {}}
             transition={{ delay: 0.6, duration: 0.6 }}
-            className="h-[2px] bg-gold/40 mt-8"
+            className="h-[2px] bg-gradient-to-r from-gold/60 to-gold/20 mt-8"
+            style={{ transform: 'translateZ(5px)' }}
           />
-        </div>
+        </motion.div>
       </motion.div>
     </div>
   );

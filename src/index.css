@@ -59,9 +59,20 @@ body {
   border-radius: 3px;
 }
 
-/* Perspective for 3D card flips */
+/* ==============================
+   3D & PERSPECTIVE UTILITIES
+   ============================== */
+
 .perspective-1000 {
   perspective: 1000px;
+}
+
+.perspective-1500 {
+  perspective: 1500px;
+}
+
+.perspective-2000 {
+  perspective: 2000px;
 }
 
 .preserve-3d {
@@ -76,19 +87,123 @@ body {
   transform: rotateY(180deg);
 }
 
-/* Glassmorphism card */
+/* 3D Depth shadow for lifted cards */
+.depth-shadow {
+  box-shadow:
+    0 2px 4px rgba(0,0,0,0.02),
+    0 4px 8px rgba(0,0,0,0.03),
+    0 8px 16px rgba(0,0,0,0.04),
+    0 16px 32px rgba(0,0,0,0.05),
+    0 32px 64px rgba(0,0,0,0.06);
+}
+
+.depth-shadow-gold {
+  box-shadow:
+    0 4px 8px rgba(249, 115, 22, 0.04),
+    0 8px 16px rgba(249, 115, 22, 0.06),
+    0 16px 32px rgba(249, 115, 22, 0.08),
+    0 32px 64px rgba(249, 115, 22, 0.05);
+}
+
+/* ==============================
+   PREMIUM GLASSMORPHISM
+   ============================== */
+
 .glass-card {
   background: rgba(248, 250, 252, 0.6);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(249, 115, 22, 0.15);
-  border-radius: 16px;
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(249, 115, 22, 0.12);
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* Subtle noise texture overlay for premium feel */
+.glass-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  border-radius: inherit;
+}
+
+.glass-card > * {
+  position: relative;
+  z-index: 1;
 }
 
 .glass-card-hover:hover {
-  border-color: rgba(249, 115, 22, 0.4);
-  box-shadow: 0 0 30px rgba(249, 115, 22, 0.1);
+  border-color: rgba(249, 115, 22, 0.35);
+  box-shadow:
+    0 0 30px rgba(249, 115, 22, 0.08),
+    0 20px 60px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  transform: translateY(-4px);
 }
+
+/* Premium glass card with animated glow border */
+.glass-card-3d {
+  background: rgba(248, 250, 252, 0.55);
+  backdrop-filter: blur(20px) saturate(200%);
+  -webkit-backdrop-filter: blur(20px) saturate(200%);
+  border: 1px solid rgba(249, 115, 22, 0.1);
+  border-radius: 24px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.glass-card-3d::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.025'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  border-radius: inherit;
+}
+
+/* Animated border glow */
+.glass-card-3d::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0%,
+    rgba(249, 115, 22, 0.3) 10%,
+    transparent 20%,
+    transparent 80%,
+    rgba(22, 163, 74, 0.2) 90%,
+    transparent 100%
+  );
+  z-index: -1;
+  animation: border-rotate 8s linear infinite;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.glass-card-3d:hover::after {
+  opacity: 1;
+}
+
+.glass-card-3d > * {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes border-rotate {
+  to { transform: rotate(360deg); }
+}
+
+/* ==============================
+   ANIMATED GRADIENTS & GLOWS
+   ============================== */
 
 @keyframes gradient-shift {
   0% { background-position: 0% 50%; }
@@ -105,6 +220,24 @@ body {
   background-clip: text;
   animation: gradient-shift 5s ease infinite;
 }
+
+/* Aurora glow background */
+.aurora-bg {
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 40%, rgba(249, 115, 22, 0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 60%, rgba(22, 163, 74, 0.04) 0%, transparent 50%),
+    radial-gradient(ellipse 100% 80% at 50% 50%, rgba(249, 115, 22, 0.02) 0%, transparent 70%);
+  animation: aurora-shift 12s ease-in-out infinite alternate;
+}
+
+@keyframes aurora-shift {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(15deg); }
+}
+
+/* ==============================
+   ANIMATIONS
+   ============================== */
 
 /* Animated background particles */
 @keyframes float {
@@ -124,6 +257,27 @@ body {
   100% { background-position: 200% 0; }
 }
 
+@keyframes neon-breathe {
+  0%, 100% {
+    text-shadow: 0 0 10px rgba(249, 115, 22, 0.2), 0 0 20px rgba(249, 115, 22, 0.1);
+  }
+  50% {
+    text-shadow: 0 0 20px rgba(249, 115, 22, 0.4), 0 0 40px rgba(249, 115, 22, 0.15), 0 0 60px rgba(249, 115, 22, 0.05);
+  }
+}
+
+@keyframes float-3d {
+  0%, 100% { transform: translateY(0) translateZ(0) rotateX(0deg); }
+  25% { transform: translateY(-10px) translateZ(20px) rotateX(2deg); }
+  50% { transform: translateY(-20px) translateZ(30px) rotateX(-1deg); }
+  75% { transform: translateY(-5px) translateZ(10px) rotateX(1deg); }
+}
+
+@keyframes orbit {
+  0% { transform: rotate(0deg) translateX(var(--orbit-radius, 100px)) rotate(0deg); }
+  100% { transform: rotate(360deg) translateX(var(--orbit-radius, 100px)) rotate(-360deg); }
+}
+
 .animate-pulse-glow {
   animation: pulse-glow 2s ease-in-out infinite;
 }
@@ -133,6 +287,19 @@ body {
   background-size: 200% 100%;
   animation: shimmer 3s ease-in-out infinite;
 }
+
+.animate-neon-breathe {
+  animation: neon-breathe 4s ease-in-out infinite;
+}
+
+.animate-float-3d {
+  animation: float-3d 6s ease-in-out infinite;
+  transform-style: preserve-3d;
+}
+
+/* ==============================
+   SECTION STYLING
+   ============================== */
 
 /* Section divider gradient */
 .section-divider {
@@ -153,7 +320,10 @@ body {
               linear-gradient(180deg, var(--color-midnight) 0%, var(--color-deep-navy) 100%);
 }
 
-/* Leaf floating animation */
+/* ==============================
+   LEAF ANIMATIONS
+   ============================== */
+
 @keyframes leaf-float-1 {
   0%, 100% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0.15; }
   50% { transform: translateY(-40px) rotate(15deg) scale(1.1); opacity: 0.25; }
@@ -171,4 +341,70 @@ body {
 
 .leaf-float-2 {
   animation: leaf-float-2 12s ease-in-out infinite;
+}
+
+/* ==============================
+   3D TILT CARD COMPONENT
+   ============================== */
+
+.tilt-card {
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  will-change: transform;
+}
+
+.tilt-card-inner {
+  transform: translateZ(40px);
+  transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.tilt-card:hover .tilt-card-inner {
+  transform: translateZ(60px);
+}
+
+/* ==============================
+   PREMIUM BUTTON EFFECTS
+   ============================== */
+
+.btn-premium {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-premium::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0%,
+    rgba(255,255,255,0.15) 10%,
+    transparent 20%
+  );
+  animation: btn-shine 4s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes btn-shine {
+  to { transform: rotate(360deg); }
+}
+
+/* ==============================
+   CUSTOM CURSOR GLOW
+   ============================== */
+
+.cursor-glow {
+  position: fixed;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(249, 115, 22, 0.06) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s ease;
+  mix-blend-mode: screen;
 }

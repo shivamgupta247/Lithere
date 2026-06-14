@@ -1,7 +1,89 @@
-import { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { useRef, useCallback } from 'react';
+import { motion, useInView, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import floatingLeavesImg from '../assets/floating_leaves.png';
+
+function Benefit3DCard({ benefit, index, isInView }) {
+  const cardRef = useRef(null);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [10, -10]), { stiffness: 200, damping: 25 });
+  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-10, 10]), { stiffness: 200, damping: 25 });
+  const glowX = useSpring(useTransform(mouseX, [-0.5, 0.5], [0, 100]), { stiffness: 200, damping: 25 });
+  const glowY = useSpring(useTransform(mouseY, [-0.5, 0.5], [0, 100]), { stiffness: 200, damping: 25 });
+
+  const handleMouseMove = useCallback((e) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    mouseX.set((e.clientX - rect.left) / rect.width - 0.5);
+    mouseY.set((e.clientY - rect.top) / rect.height - 0.5);
+  }, [mouseX, mouseY]);
+
+  const handleMouseLeave = useCallback(() => {
+    mouseX.set(0);
+    mouseY.set(0);
+  }, [mouseX, mouseY]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 50, rotateX: -8 }}
+      animate={isInView ? { opacity: 1, y: 0, rotateX: 0 } : {}}
+      transition={{ duration: 0.7, delay: 0.2 + index * 0.1, ease: [0.23, 1, 0.32, 1] }}
+      style={{ perspective: '1000px' }}
+    >
+      <motion.div
+        ref={cardRef}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
+        whileHover={{ y: -8, transition: { duration: 0.3 } }}
+        className="glass-card p-10 lg:p-12 group relative overflow-hidden cursor-default h-full"
+      >
+        {/* Dynamic mouse-following light */}
+        <motion.div
+          className="absolute inset-0 pointer-events-none rounded-[20px] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+          style={{
+            background: useTransform(
+              [glowX, glowY],
+              ([x, y]) => `radial-gradient(circle at ${x}% ${y}%, rgba(249,115,22,0.1) 0%, transparent 60%)`
+            ),
+          }}
+        />
+
+        {/* Gradient background on hover */}
+        <div className={`absolute inset-0 bg-gradient-to-br ${benefit.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+
+        <div className="relative z-10" style={{ transformStyle: 'preserve-3d' }}>
+          <motion.div
+            className="text-gold mb-8"
+            whileHover={{ scale: 1.15, rotate: -5 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 15 }}
+            style={{ transform: 'translateZ(30px)' }}
+          >
+            {benefit.icon}
+          </motion.div>
+
+          <h3
+            className="font-serif text-xl font-bold text-white mb-4 group-hover:text-gold-light transition-colors duration-300"
+            style={{ transform: 'translateZ(20px)' }}
+          >
+            {benefit.title}
+          </h3>
+
+          <p
+            className="text-gray text-sm leading-relaxed"
+            style={{ transform: 'translateZ(10px)' }}
+          >
+            {benefit.description}
+          </p>
+        </div>
+
+        {/* Bottom glow line */}
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-[2px] bg-gradient-to-r from-transparent via-gold/40 to-transparent group-hover:w-3/4 transition-all duration-700" />
+      </motion.div>
+    </motion.div>
+  );
+}
 
 export default function Benefits() {
   const { t } = useTranslation();
@@ -93,7 +175,11 @@ export default function Benefits() {
     <section id="benefits" className="relative py-40 lg:py-48 overflow-hidden" ref={ref}>
       {/* Background */}
       <div className="absolute top-0 left-0 right-0 section-divider" />
-      <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-gold/3 rounded-full blur-[200px]" />
+      <motion.div
+        animate={{ y: [0, -25, 0], x: [0, 15, 0] }}
+        transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute top-1/3 right-1/4 w-96 h-96 bg-gold/3 rounded-full blur-[200px]"
+      />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         {/* Section Header */}
@@ -104,9 +190,19 @@ export default function Benefits() {
             transition={{ duration: 0.6 }}
             className="flex items-center justify-center gap-3 mb-6"
           >
-            <div className="w-8 h-[1px] bg-gold/50" />
+            <motion.div
+              initial={{ width: 0 }}
+              animate={isInView ? { width: 32 } : {}}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="h-[1px] bg-gold/50"
+            />
             <span className="text-gold text-xs tracking-[0.3em] uppercase">{t('benefits.subtitle')}</span>
-            <div className="w-8 h-[1px] bg-gold/50" />
+            <motion.div
+              initial={{ width: 0 }}
+              animate={isInView ? { width: 32 } : {}}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="h-[1px] bg-gold/50"
+            />
           </motion.div>
 
           <motion.h2
@@ -121,37 +217,15 @@ export default function Benefits() {
           </motion.h2>
         </div>
 
-        {/* Benefits Grid */}
+        {/* 3D Benefits Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {benefits.map((benefit, i) => (
-            <motion.div
+            <Benefit3DCard
               key={benefit.title}
-              initial={{ opacity: 0, y: 50 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.2 + i * 0.1 }}
-              whileHover={{ y: -8, transition: { duration: 0.3 } }}
-              className="glass-card p-10 lg:p-12 group relative overflow-hidden"
-            >
-              {/* Gradient background on hover */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${benefit.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-
-              <div className="relative z-10">
-                <motion.div
-                  className="text-gold mb-8"
-                  whileHover={{ scale: 1.1, rotate: -5 }}
-                >
-                  {benefit.icon}
-                </motion.div>
-
-                <h3 className="font-serif text-xl font-bold text-white mb-4 group-hover:text-gold-light transition-colors duration-300">
-                  {benefit.title}
-                </h3>
-
-                <p className="text-gray text-sm leading-relaxed">
-                  {benefit.description}
-                </p>
-              </div>
-            </motion.div>
+              benefit={benefit}
+              index={i}
+              isInView={isInView}
+            />
           ))}
         </div>
 
@@ -162,7 +236,12 @@ export default function Benefits() {
             animate={audienceInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8 }}
           >
-            <div className="w-8 h-[2px] bg-gold/50 mb-6" />
+            <motion.div
+              className="w-8 h-[2px] bg-gold/50 mb-6"
+              initial={{ width: 0 }}
+              animate={audienceInView ? { width: 32 } : {}}
+              transition={{ duration: 0.8 }}
+            />
             <h2 className="font-serif text-4xl sm:text-5xl font-bold mb-8">
               <span className="italic gold-text">{t('benefits.audience.title1')}</span>
               <br />
@@ -180,39 +259,50 @@ export default function Benefits() {
                   initial={{ opacity: 0, x: -20 }}
                   animate={audienceInView ? { opacity: 1, x: 0 } : {}}
                   transition={{ delay: 0.4 + i * 0.1, duration: 0.5 }}
-                  className="flex items-center gap-3 text-gray-light"
+                  className="flex items-center gap-3 text-gray-light group"
                 >
-                  <div className="w-2 h-2 rounded-full bg-gold flex-shrink-0" />
-                  <span className="text-sm">{item}</span>
+                  <motion.div
+                    className="w-2 h-2 rounded-full bg-gold flex-shrink-0"
+                    whileHover={{ scale: 1.5, boxShadow: '0 0 10px rgba(249,115,22,0.5)' }}
+                  />
+                  <span className="text-sm group-hover:text-gold-light transition-colors duration-300">{item}</span>
                 </motion.li>
               ))}
             </ul>
           </motion.div>
 
-          {/* Decorative Visual */}
+          {/* 3D Decorative Visual */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={audienceInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.3 }}
             className="relative"
+            style={{ perspective: '1000px' }}
           >
             <div className="aspect-square max-w-md mx-auto relative">
-              {/* Concentric rings */}
+              {/* Concentric rings with 3D depth */}
               {[0, 1, 2, 3].map((ring) => (
                 <motion.div
                   key={ring}
                   animate={{ rotate: ring % 2 === 0 ? 360 : -360 }}
                   transition={{ duration: 20 + ring * 10, repeat: Infinity, ease: 'linear' }}
                   className="absolute inset-0 rounded-full border border-gold/5"
-                  style={{ margin: `${ring * 30}px` }}
+                  style={{
+                    margin: `${ring * 30}px`,
+                    transform: `translateZ(${ring * -10}px)`,
+                    transformStyle: 'preserve-3d',
+                  }}
                 >
                   {ring < 3 && (
-                    <div
+                    <motion.div
                       className="absolute w-2 h-2 rounded-full bg-gold/30"
+                      animate={{ opacity: [0.2, 0.6, 0.2] }}
+                      transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut', delay: ring }}
                       style={{
                         top: ring % 2 === 0 ? '0' : '50%',
                         left: ring % 2 === 0 ? '50%' : '0',
                         transform: 'translate(-50%, -50%)',
+                        boxShadow: '0 0 8px rgba(249,115,22,0.3)',
                       }}
                     />
                   )}
@@ -225,18 +315,21 @@ export default function Benefits() {
                   animate={{ y: [0, -20, 0] }}
                   transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
                   className="flex flex-col items-center justify-center pointer-events-auto"
+                  style={{ transformStyle: 'preserve-3d' }}
                 >
                   <motion.div
-                     animate={{ rotate: [0, 5, -5, 0] }}
+                     animate={{ rotate: [0, 5, -5, 0], rotateY: [0, 10, -10, 0] }}
                      transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+                     style={{ transformStyle: 'preserve-3d' }}
                   >
                     <img
                       src={floatingLeavesImg}
                       alt="Floating Leaves"
                       className="w-48 h-48 object-contain mix-blend-multiply drop-shadow-xl"
+                      style={{ transform: 'translateZ(40px)' }}
                     />
                   </motion.div>
-                  <div className="mt-[-20px] flex flex-col items-center relative z-10">
+                  <div className="mt-[-20px] flex flex-col items-center relative z-10" style={{ transform: 'translateZ(50px)' }}>
                     <p className="text-gold font-serif text-3xl font-bold drop-shadow-sm">Lithera</p>
                     <p className="text-navy font-bold text-xs tracking-widest bg-[#ffffff]/60 px-3 py-1 rounded-full mt-2 backdrop-blur-md border border-gold/20 shadow-sm">{t('benefits.audience.badge')}</p>
                   </div>

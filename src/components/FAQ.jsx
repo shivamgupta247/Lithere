@@ -16,9 +16,13 @@ function FAQItem({ faq, isOpen, onToggle, index, isInView }) {
         aria-expanded={isOpen}
       >
         <span className="flex items-center gap-4">
-          <span className="text-gold/70 font-serif text-lg font-bold">
+          <motion.span
+            className="text-gold/70 font-serif text-lg font-bold"
+            animate={isOpen ? { scale: 1.1, color: 'rgba(249,115,22,0.9)' } : { scale: 1 }}
+            transition={{ duration: 0.3 }}
+          >
             {String(index + 1).padStart(2, '0')}
-          </span>
+          </motion.span>
           <span className={`font-serif text-lg sm:text-xl transition-colors duration-300 ${
             isOpen ? 'text-gold-light' : 'text-white group-hover:text-gold-light'
           }`}>
@@ -28,10 +32,10 @@ function FAQItem({ faq, isOpen, onToggle, index, isInView }) {
 
         <motion.span
           animate={{ rotate: isOpen ? 45 : 0 }}
-          transition={{ duration: 0.3 }}
-          className={`flex-shrink-0 ml-4 w-8 h-8 rounded-full border flex items-center justify-center transition-colors duration-300 ${
+          transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
+          className={`flex-shrink-0 ml-4 w-8 h-8 rounded-full border flex items-center justify-center transition-all duration-300 ${
             isOpen
-              ? 'border-gold bg-gold/10 text-gold'
+              ? 'border-gold bg-gold/10 text-gold shadow-[0_0_12px_rgba(249,115,22,0.2)]'
               : 'border-gold/30 text-gold/60 group-hover:border-gold/50'
           }`}
         >
@@ -47,13 +51,18 @@ function FAQItem({ faq, isOpen, onToggle, index, isInView }) {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.4, ease: 'easeInOut' }}
+            transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
             className="overflow-hidden"
           >
             <div className="pb-8 pl-14 pr-14">
-              <p className="text-gray text-sm sm:text-base leading-relaxed">
+              <motion.p
+                initial={{ y: -10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.1, duration: 0.3 }}
+                className="text-gray text-sm sm:text-base leading-relaxed"
+              >
                 {faq.a}
-              </p>
+              </motion.p>
             </div>
           </motion.div>
         )}
@@ -78,7 +87,11 @@ export default function FAQ() {
     <section id="faq" className="relative py-40 lg:py-48 overflow-hidden" ref={ref}>
       {/* Background */}
       <div className="absolute top-0 left-0 right-0 section-divider" />
-      <div className="absolute bottom-0 left-1/4 w-80 h-80 bg-gold/3 rounded-full blur-[150px]" />
+      <motion.div
+        animate={{ y: [0, -20, 0], scale: [1, 1.1, 1] }}
+        transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute bottom-0 left-1/4 w-80 h-80 bg-gold/3 rounded-full blur-[150px]"
+      />
 
       <div className="max-w-4xl mx-auto px-6 lg:px-8">
         {/* Section Header */}
@@ -89,9 +102,19 @@ export default function FAQ() {
             transition={{ duration: 0.6 }}
             className="flex items-center justify-center gap-3 mb-6"
           >
-            <div className="w-8 h-[1px] bg-gold/50" />
+            <motion.div
+              initial={{ width: 0 }}
+              animate={isInView ? { width: 32 } : {}}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="h-[1px] bg-gold/50"
+            />
             <span className="text-gold text-xs tracking-[0.3em] uppercase">{t('faq.subtitle')}</span>
-            <div className="w-8 h-[1px] bg-gold/50" />
+            <motion.div
+              initial={{ width: 0 }}
+              animate={isInView ? { width: 32 } : {}}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="h-[1px] bg-gold/50"
+            />
           </motion.div>
 
           <motion.h2
@@ -106,8 +129,14 @@ export default function FAQ() {
           </motion.h2>
         </div>
 
-        {/* FAQ Items */}
-        <div className="glass-card p-8 sm:p-10">
+        {/* FAQ Items with premium glass */}
+        <motion.div
+          initial={{ opacity: 0, y: 30, rotateX: -5 }}
+          animate={isInView ? { opacity: 1, y: 0, rotateX: 0 } : {}}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="glass-card-3d p-8 sm:p-10"
+          style={{ perspective: '1000px' }}
+        >
           {faqs.map((faq, i) => (
             <FAQItem
               key={i}
@@ -118,7 +147,7 @@ export default function FAQ() {
               isInView={isInView}
             />
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
