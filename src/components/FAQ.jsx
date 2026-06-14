@@ -134,7 +134,7 @@ export default function FAQ() {
           initial={{ opacity: 0, y: 30, rotateX: -5 }}
           animate={isInView ? { opacity: 1, y: 0, rotateX: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="glass-card-3d p-8 sm:p-10"
+          className="glass-card p-8 sm:p-10"
           style={{ perspective: '1000px' }}
         >
           {faqs.map((faq, i) => (

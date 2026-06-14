@@ -167,39 +167,7 @@ body {
   border-radius: inherit;
 }
 
-/* Animated border glow */
-.glass-card-3d::after {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  background: conic-gradient(
-    from 0deg,
-    transparent 0%,
-    rgba(249, 115, 22, 0.3) 10%,
-    transparent 20%,
-    transparent 80%,
-    rgba(22, 163, 74, 0.2) 90%,
-    transparent 100%
-  );
-  z-index: -1;
-  animation: border-rotate 8s linear infinite;
-  opacity: 0;
-  transition: opacity 0.5s ease;
-}
 
-.glass-card-3d:hover::after {
-  opacity: 1;
-}
-
-.glass-card-3d > * {
-  position: relative;
-  z-index: 1;
-}
-
-@keyframes border-rotate {
-  to { transform: rotate(360deg); }
-}
 
 /* ==============================
    ANIMATED GRADIENTS & GLOWS
